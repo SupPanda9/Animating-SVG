@@ -214,6 +214,14 @@ function addAttributeModifierButtons() {
     moveBackwardButton.innerText = 'Move Backward';
     moveBackwardButton.addEventListener('click', moveElementBackward);
     buttonContainer.appendChild(moveBackwardButton);
+
+    const animationTypes = ['translate', 'scale', 'rotate', 'color'];
+    animationTypes.forEach(type => {
+        const animateButton = document.createElement('button');
+        animateButton.innerText = `Animate ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+        animateButton.addEventListener('click', () => showAnimationSettings(type));
+        buttonContainer.appendChild(animateButton);
+    });
 }
 
 function changeElementType(newType) {
@@ -318,6 +326,110 @@ function applyTranslation(dx, dy) {
     const newTransform = currentTransform.replace(translateRegex, '').trim();
 
     selectedElement.setAttribute('transform', `${newTransform} translate(${newDx}, ${newDy})`);
+}
+
+function showAnimationSettings(type) {
+    const animationSettingsContainer = document.getElementById('animationSettingsContainer') || document.createElement('div');
+    animationSettingsContainer.id = 'animationSettingsContainer';
+    animationSettingsContainer.innerHTML = ''; // Clear previous settings
+
+    // Common animation settings
+    animationSettingsContainer.appendChild(createLabeledInput('Duration (s):', 'number', 2, function(event) {
+        animationSettings[type].duration = event.target.value;
+    }));
+
+    animationSettingsContainer.appendChild(createLabeledInput('Repeat Count:', 'text', 'indefinite', function(event) {
+        animationSettings[type].repeatCount = event.target.value;
+    }));
+
+    // Specific settings based on animation type
+    if (type === 'translate') {
+        animationSettingsContainer.appendChild(createLabeledInput('Translate X:', 'number', 100, function(event) {
+            animationSettings[type].dx = event.target.value;
+        }));
+
+        animationSettingsContainer.appendChild(createLabeledInput('Translate Y:', 'number', 100, function(event) {
+            animationSettings[type].dy = event.target.value;
+        }));
+    } else if (type === 'scale') {
+        animationSettingsContainer.appendChild(createLabeledInput('Scale X:', 'number', 2, function(event) {
+            animationSettings[type].sx = event.target.value;
+        }));
+
+        animationSettingsContainer.appendChild(createLabeledInput('Scale Y:', 'number', 2, function(event) {
+            animationSettings[type].sy = event.target.value;
+        }));
+    } else if (type === 'rotate') {
+        animationSettingsContainer.appendChild(createLabeledInput('Rotation Angle:', 'number', 360, function(event) {
+            animationSettings[type].angle = event.target.value;
+        }));
+
+        const directions = ['Clockwise', 'Counterclockwise'];
+        animationSettingsContainer.appendChild(createLabeledSelect('Direction:', directions, 'Clockwise', function(event) {
+            animationSettings[type].direction = event.target.value;
+        }));
+    } else if (type === 'color') {
+        animationSettingsContainer.appendChild(createLabeledInput('Color:', 'color', '#ff0000', function(event) {
+            animationSettings[type].color = event.target.value;
+        }));
+    }
+
+    // Apply button to start the animation
+    const applyButton = document.createElement('button');
+    applyButton.innerText = 'Apply Animation';
+    applyButton.addEventListener('click', () => applyAnimation(type));
+    animationSettingsContainer.appendChild(applyButton);
+
+    const buttonContainer = document.getElementById('buttonContainer');
+    buttonContainer.appendChild(animationSettingsContainer);
+}
+
+const animationSettings = {
+    translate: { dx: 100, dy: 100, duration: 2, repeatCount: 'indefinite' },
+    scale: { sx: 2, sy: 2, duration: 2, repeatCount: 'indefinite' },
+    rotate: { angle: 360, duration: 2, repeatCount: 'indefinite', direction: 'Clockwise'},
+    color: { color: '#ff0000', duration: 2, repeatCount: 'indefinite' }
+};
+
+function applyAnimation(type) {
+    const settings = animationSettings[type];
+    let animation;
+    
+    if (type === 'translate') {
+        animation = document.createElementNS('http://www.w3.org/2000/svg', 'animateTransform');
+        animation.setAttribute('attributeName', 'transform');
+        animation.setAttribute('type', 'translate');
+        animation.setAttribute('from', '0 0');
+        animation.setAttribute('to', `${settings.dx} ${settings.dy}`);
+    } else if (type === 'scale') {
+        animation = document.createElementNS('http://www.w3.org/2000/svg', 'animateTransform');
+        animation.setAttribute('attributeName', 'transform');
+        animation.setAttribute('type', 'scale');
+        animation.setAttribute('from', '1 1');
+        animation.setAttribute('to', `${settings.sx} ${settings.sy}`);
+    } else if (type === 'rotate') {
+        animation = document.createElementNS('http://www.w3.org/2000/svg', 'animateTransform');
+        const bbox = selectedElement.getBBox();
+        const cx = bbox.x + bbox.width / 2; // X coordinate of the center
+        const cy = bbox.y + bbox.height / 2; // Y coordinate of the center
+        animation.setAttribute('attributeName', 'transform');
+        animation.setAttribute('type', 'rotate');
+        const fromAngle = settings.direction === 'Clockwise' ? 0 : settings.angle;
+        const toAngle = settings.direction === 'Clockwise' ? settings.angle : 0;
+        animation.setAttribute('from', `${fromAngle} ${cx} ${cy}`);
+        animation.setAttribute('to', `${toAngle} ${cx} ${cy}`);
+    } else if (type === 'color') {
+        animation = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+        animation.setAttribute('attributeName', 'fill');
+        animation.setAttribute('from', selectedElement.getAttribute('fill'));
+        animation.setAttribute('to', settings.color);
+    }
+
+    animation.setAttribute('dur', `${settings.duration}s`);
+    animation.setAttribute('repeatCount', settings.repeatCount);
+
+    selectedElement.appendChild(animation);
+    animation.beginElement();
 }
 
 function moveElementForward() {
