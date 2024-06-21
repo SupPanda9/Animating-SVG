@@ -1,12 +1,13 @@
 let selectedElement = null;
 
+// allows the user to choose a figure to modify
 function addClickEventToSVGElements() {
     const svgContainer = document.getElementById('svgContainer');
     const svgElements = getNonGroupSVGElements(svgContainer);
 
     svgElements.forEach(function(element) {
         element.addEventListener('click', function(event) {
-            event.stopPropagation(); // Спиране на разпространението на събитието
+            event.stopPropagation();
             console.log("clicked");
             if (selectedElement !== null) {
                 selectedElement.classList.remove('selected');
@@ -16,7 +17,6 @@ function addClickEventToSVGElements() {
             selectedElement.classList.add('selected');
             
             console.log("Selected element type: " + getSelectedElementType());
-            // Показване на color picker само когато има избран елемент
             addAttributeModifierButtons();
             enableElementDrag();
         });
@@ -38,66 +38,22 @@ function getNonGroupSVGElements(container) {
     return elements;
 }
 
-function createLabeledSelect(labelText, options, selectedOption, changeHandler) {
-    const container = document.createElement('div');
-    container.style.display = 'flex';
-    container.style.flexDirection = 'column';
-    container.style.marginBottom = '10px';
-
-    const label = document.createElement('label');
-    label.innerText = labelText;
-
-    const select = document.createElement('select');
-    options.forEach(option => {
-        const optionElement = document.createElement('option');
-        optionElement.value = option;
-        optionElement.innerText = option.charAt(0).toUpperCase() + option.slice(1);
-        if (option === selectedOption) {
-            optionElement.selected = true;
-        }
-        select.appendChild(optionElement);
-    });
-    select.addEventListener('change', changeHandler);
-
-    container.appendChild(label);
-    container.appendChild(select);
-
-    return container;
-}
-
-function createLabeledInput(labelText, inputType, inputValue, inputHandler) {
-    const container = document.createElement('div');
-    container.style.display = 'flex';
-    container.style.flexDirection = 'column';
-    container.style.marginBottom = '10px';
-
-    const label = document.createElement('label');
-    label.innerText = labelText;
-
-    const input = document.createElement('input');
-    input.type = inputType;
-    input.value = inputValue;
-    input.addEventListener('input', inputHandler);
-
-    container.appendChild(label);
-    container.appendChild(input);
-
-    return container;
-}
-
 function addAttributeModifierButtons() {
     const buttonContainer = document.getElementById('buttonContainer');
     buttonContainer.innerHTML = ''; // Изчистване на предишните бутони
 
     if (selectedElement === null) return;
-    // Add type selector
+
+    // Supported types of elements
     const types = ['rect', 'circle', 'ellipse', 'text', 'path'];
+
     const currentType = getSelectedElementType();
-    buttonContainer.appendChild(createLabeledSelect('Element Type:', types, currentType, function(event) {
+    // Change element type
+    buttonContainer.appendChild(createLabeledDropdown('Element Type:', types, currentType, function(event) {
         changeElementType(event.target.value);
     }));
 
-    // Бутони за промяна на атрибути
+    // Buttons for common attributes in all figures
     buttonContainer.appendChild(createLabeledInput('Fill Color:', 'color', selectedElement.getAttribute('fill') || '#000000', function(event) {
         selectedElement.setAttribute('fill', event.target.value);
     }));
@@ -110,7 +66,7 @@ function addAttributeModifierButtons() {
         selectedElement.setAttribute('stroke-width', event.target.value);
     }));
 
-    // Специфични атрибути за различни типове елементи
+    // Specific attributes for Rectangle element
     const type = getSelectedElementType();
     if (type === 'rect') {
         buttonContainer.appendChild(createLabeledInput('Width:', 'number', selectedElement.getAttribute('width') || 0, function(event) {
@@ -130,6 +86,8 @@ function addAttributeModifierButtons() {
         }));
     }
 
+
+    // Specific attributes for Circle element
     if (type === 'circle') {
         buttonContainer.appendChild(createLabeledInput('Center X:', 'number', selectedElement.getAttribute('cx') || 0, function(event) {
             selectedElement.setAttribute('cx', event.target.value);
@@ -144,6 +102,8 @@ function addAttributeModifierButtons() {
         }));
     }
 
+
+    // Specific attributes for Ellipse element
     if (type === 'ellipse') {
         buttonContainer.appendChild(createLabeledInput('Center X:', 'number', selectedElement.getAttribute('cx') || 0, function(event) {
             selectedElement.setAttribute('cx', event.target.value);
@@ -162,6 +122,7 @@ function addAttributeModifierButtons() {
         }));
     }
 
+    // Specific attributes for Text element
     if (type === 'text') {
         buttonContainer.appendChild(createLabeledInput('Text:', 'text', selectedElement.textContent, function(event) {
             selectedElement.textContent = event.target.value;
@@ -179,7 +140,6 @@ function addAttributeModifierButtons() {
             selectedElement.setAttribute('fill', event.target.value);
         }));
 
-        // Adding inputs for x and y coordinates
          buttonContainer.appendChild(createLabeledInput('X:', 'number', selectedElement.getAttribute('x') || 0, function(event) {
             selectedElement.setAttribute('x', event.target.value);
         }));
@@ -189,13 +149,14 @@ function addAttributeModifierButtons() {
         }));
     }
 
+     // Specific attributes for Path element
     if (type === 'path') {
-        buttonContainer.appendChild(createLabeledInput('Translate X:', 'number', 0, function(event) {
-            applyTranslation(event.target.value, 0);
+        buttonContainer.appendChild(createLabeledInput('Start point of path X:', 'number', 0, function(event) {
+            applyTranslationX(event.target.value);
         }));
     
-        buttonContainer.appendChild(createLabeledInput('Translate Y:', 'number', 0, function(event) {
-            applyTranslation(0, event.target.value);
+        buttonContainer.appendChild(createLabeledInput('Start point of path Y:', 'number', 0, function(event) {
+            applyTranslationY(event.target.value);
         }));
     }
 
@@ -203,8 +164,8 @@ function addAttributeModifierButtons() {
         applyRotation(event.target.value);
     }));
 
-    // Добавяне на бутоните за преместване напред и назад
-    const moveForwardButton = document.createElement('button');
+    // Buttons for forward and backward movement
+    /*const moveForwardButton = document.createElement('button');
     moveForwardButton.innerText = 'Move Forward';
     moveForwardButton.addEventListener('click', moveElementForward);
     buttonContainer.appendChild(moveForwardButton);
@@ -213,16 +174,27 @@ function addAttributeModifierButtons() {
     moveBackwardButton.innerText = 'Move Backward';
     moveBackwardButton.addEventListener('click', moveElementBackward);
     buttonContainer.appendChild(moveBackwardButton);
+    */
 
     const animationTypes = ['translate', 'scale', 'rotate', 'color'];
     animationTypes.forEach(type => {
         const animateButton = document.createElement('button');
         animateButton.innerText = `Animate ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+
         animateButton.addEventListener('click', () => showAnimationSettings(type));
         buttonContainer.appendChild(animateButton);
     });
 }
 
+// return the type of figure
+function getSelectedElementType() {
+    if (selectedElement !== null) {
+        return selectedElement.tagName.toLowerCase();
+    }
+    return null;
+}
+
+// Change the selected element's type
 function changeElementType(newType) {
     if (selectedElement === null) return;
 
@@ -236,30 +208,37 @@ function changeElementType(newType) {
         }
     });
 
+    const bbox = selectedElement.getBBox();
+    const x = bbox.x;
+    const y = bbox.y;
+    const width = bbox.width;
+    const height = bbox.height;
+
     // Copy specific attributes based on new type
     if (newType === 'rect') {
-        newElement.setAttribute('width', selectedElement.getAttribute('width') || 100);
-        newElement.setAttribute('height', selectedElement.getAttribute('height') || 100);
-        newElement.setAttribute('x', selectedElement.getAttribute('x') || 0);
-        newElement.setAttribute('y', selectedElement.getAttribute('y') || 0);
+        newElement.setAttribute('width', width);
+        newElement.setAttribute('height', height);
+        newElement.setAttribute('x', x);
+        newElement.setAttribute('y', y);
     } else if (newType === 'circle') {
-        newElement.setAttribute('cx', selectedElement.getAttribute('cx') || 50);
-        newElement.setAttribute('cy', selectedElement.getAttribute('cy') || 50);
-        newElement.setAttribute('r', selectedElement.getAttribute('r') || 50);
+        newElement.setAttribute('cx', x + width / 2);
+        newElement.setAttribute('cy', y + height / 2);
+        newElement.setAttribute('r', Math.min(width, height) / 2);
     } else if (newType === 'ellipse') {
-        newElement.setAttribute('cx', selectedElement.getAttribute('cx') || 50);
-        newElement.setAttribute('cy', selectedElement.getAttribute('cy') || 50);
-        newElement.setAttribute('rx', selectedElement.getAttribute('rx') || 50);
-        newElement.setAttribute('ry', selectedElement.getAttribute('ry') || 25);
+        newElement.setAttribute('cx', x + width / 2);
+        newElement.setAttribute('cy', y + height / 2);
+        newElement.setAttribute('rx', width / 2);
+        newElement.setAttribute('ry', height / 2);
     } else if (newType === 'text') {
         newElement.textContent = selectedElement.textContent || 'Sample Text';
         newElement.setAttribute('font-size', selectedElement.getAttribute('font-size') || 12);
         newElement.setAttribute('font-family', selectedElement.getAttribute('font-family') || 'Arial');
         newElement.setAttribute('fill', selectedElement.getAttribute('fill') || '#000000');
-        newElement.setAttribute('x', selectedElement.getAttribute('x') || 0);
-        newElement.setAttribute('y', selectedElement.getAttribute('y') || 0);
+        newElement.setAttribute('x', x);
+        newElement.setAttribute('y', y + height/2); // lets see without height
     } else if (newType === 'path') {
-        newElement.setAttribute('d', selectedElement.getAttribute('d') || 'M10 10 H 90 V 90 H 10 Z');
+        const d = `M${x} ${y} H${x + width} V${y + height} H${x} Z`;
+        newElement.setAttribute('d', selectedElement.getAttribute('d') || d);
     }
 
     // Replace the old element with the new one in the DOM
@@ -286,6 +265,114 @@ function changeElementType(newType) {
     addAttributeModifierButtons(); // Update the attribute modifiers for the new element
 }
 
+function createLabeledInput(labelText, inputType, inputValue, inputHandler) {
+    const container = document.createElement('div');
+    container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    container.style.marginBottom = '10px';
+
+    const label = document.createElement('label');
+    label.innerText = labelText;
+
+    const input = document.createElement('input');
+    input.type = inputType;
+    input.value = inputValue;
+    input.addEventListener('input', inputHandler);
+
+    container.appendChild(label);
+    container.appendChild(input);
+
+    return container;
+}
+
+function createLabeledDropdown(labelText, options, selectedOption, changeHandler) {
+    const container = document.createElement('div');
+    container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    container.style.marginBottom = '10px';
+
+    const label = document.createElement('label');
+    label.innerText = labelText;
+
+    const select = document.createElement('select');
+    options.forEach(option => {
+        const optionElement = document.createElement('option');
+        optionElement.value = option;
+        optionElement.innerText = option.charAt(0).toUpperCase() + option.slice(1);
+        if (option === selectedOption) {
+            optionElement.selected = true;
+        }
+        select.appendChild(optionElement);
+    });
+    select.addEventListener('change', changeHandler);
+
+    container.appendChild(label);
+    container.appendChild(select);
+
+    return container;
+}
+
+// Add translation functionality to Path element
+function applyTranslationX(dx) {
+    if (selectedElement === null || dx === "") return;
+
+    const d = selectedElement.getAttribute('d');
+    const newD = translatePath(d, dx, true);
+    selectedElement.setAttribute('d', newD);
+}
+
+function applyTranslationY(dy) {
+    if (selectedElement === null || dy === "") return;
+
+    const d = selectedElement.getAttribute('d');
+    const newD = translatePath(d, dy, false);
+    selectedElement.setAttribute('d', newD);
+}
+
+function translatePath(d, dc, isXTranslation) {
+    // Регулярен израз, който търси числени стойности в дефиницията на пътя (d атрибута)
+    let index = 0;
+    let firstInstructionX = 0;
+    let firstInstructionY = 0;
+
+    // Първо преминаване през стринга, за да открием началната точка
+    d.replace(/(-?\d+(\.\d+)?)/g, (match) => {
+        const number = parseFloat(match);
+        if(index === 0) {
+            firstInstructionX = number;
+            index++;
+            console.log("I:", index);
+        }
+        else if(index === 1) {
+            firstInstructionY = number;
+            console.log("Y", firstInstructionY);
+            index++;
+        }
+        else index++;
+    });
+
+    index = 0;
+
+    return d.replace(/(-?\d+(\.\d+)?)/g, match => {
+        const number = parseFloat(match); 
+
+        if (isXTranslation && index % 2 === 0) { 
+            index++; 
+            return (number - firstInstructionX + parseFloat(dc));
+        } else if (!isXTranslation && index % 2 !== 0){
+            index++; 
+            console.log(firstInstructionY);
+            return (number - firstInstructionY + parseFloat(dc));
+        }
+        else {
+            index++;
+            console.log("End: ", index);
+            return match;
+        }
+    });
+}
+
+// Finds the current rotation
 function getRotation(transform) {
     const match = transform.match(/rotate\(([-]*\d+)\)/);
     return match ? parseInt(match[1]) : 0;
@@ -304,27 +391,6 @@ function applyRotation(degrees) {
 
     const transform = `${translateToCenter} ${rotate} ${translateBack}`;
     selectedElement.setAttribute('transform', transform);
-}
-
-function applyTranslation(dx, dy) {
-    if (selectedElement === null) return;
-
-    const currentTransform = selectedElement.getAttribute('transform') || '';
-    const translateRegex = /translate\((-?\d+\.?\d*),\s*(-?\d+\.?\d*)\)/;
-    const match = currentTransform.match(translateRegex);
-    let currentDx = 0;
-    let currentDy = 0;
-
-    if (match) {
-        currentDx = parseFloat(match[1]);
-        currentDy = parseFloat(match[2]);
-    }
-
-    const newDx = currentDx + parseFloat(dx);
-    const newDy = currentDy + parseFloat(dy);
-    const newTransform = currentTransform.replace(translateRegex, '').trim();
-
-    selectedElement.setAttribute('transform', `${newTransform} translate(${newDx}, ${newDy})`);
 }
 
 function showAnimationSettings(type) {
@@ -364,7 +430,7 @@ function showAnimationSettings(type) {
         }));
 
         const directions = ['Clockwise', 'Counterclockwise'];
-        animationSettingsContainer.appendChild(createLabeledSelect('Direction:', directions, 'Clockwise', function(event) {
+        animationSettingsContainer.appendChild(createLabeledDropdown('Direction:', directions, 'Clockwise', function(event) {
             animationSettings[type].direction = event.target.value;
         }));
     } else if (type === 'color') {
@@ -431,6 +497,7 @@ function applyAnimation(type) {
     animation.beginElement();
 }
 
+/*
 function moveElementForward() {
     if (selectedElement === null) return;
     const parent = selectedElement.parentNode;
@@ -450,13 +517,7 @@ function moveElementBackward() {
         parent.insertBefore(selectedElement, children[index - 1]);
     }
 }
-
-function getSelectedElementType() {
-    if (selectedElement !== null) {
-        return selectedElement.tagName.toLowerCase();
-    }
-    return null;
-}
+*/
 
 function enableElementDrag() {
     if (selectedElement === null) return;
@@ -494,21 +555,4 @@ function enableElementDrag() {
 
 document.addEventListener('svgLoaded', function() {
     addClickEventToSVGElements();
-    addColorPicker();
 });
-
-function addColorPicker() {
-    const colorInput = document.createElement('input');
-    colorInput.type = 'color';
-    colorInput.id = 'colorPicker';
-    colorInput.style.display = 'none'; // Начално скриване на пикера за цвят
-
-    const buttonContainer = document.getElementById('buttonContainer');
-    buttonContainer.appendChild(colorInput);
-
-    colorInput.addEventListener('input', function() {
-        if (selectedElement !== null) {
-            selectedElement.style.fill = colorInput.value;
-        }
-    });
-}
