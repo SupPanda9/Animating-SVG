@@ -35,7 +35,7 @@ form {
     flex: 1;
     background-color: #f1f1f1;
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     align-items: center;
     padding: 20px;
 }
@@ -44,6 +44,15 @@ form {
     width: 100%;
     height: 100%;
     margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#svgContainer div{
+    flex-basis: 50%;
+    box-sizing: border-box; 
+    padding: 10px; 
+    border: 1px solid #ccc;
 }
 
 .selected {

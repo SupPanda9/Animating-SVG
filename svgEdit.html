@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
 <body>
     <h1>Upload SVG File</h1>
     <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
-        <input type="file" name="svgFile" id="svgFileInput" accept=".svg">
+        <input type="file" name="svgFiles[]" id="svgFileInput" accept=".svg" multiple>
         <button type="submit">Upload</button>
     </form>
     <div class="container">

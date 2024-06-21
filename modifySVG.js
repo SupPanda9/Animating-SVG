@@ -12,7 +12,6 @@ function addClickEventToSVGElements() {
                 selectedElement.classList.remove('selected');
             }
             
-
             selectedElement = element;
             selectedElement.classList.add('selected');
             

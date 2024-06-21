@@ -3,15 +3,17 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault(); // Спиране на стандартното поведение на формата
 
         const fileInput = document.getElementById('svgFileInput');
-        const file = fileInput.files[0];
+        const files = fileInput.files;
 
-        if (!file) {
-            alert('Please select an SVG file.');
+        if (files.length === 0) {
+            alert('Please select at least one SVG file.');
             return;
         }
 
         const formData = new FormData();
-        formData.append('svgFile', file);
+        for (let i = 0; i < files.length; i++) {
+            formData.append('svgFiles[]', files[i]);
+        }
 
         fetch('uploadSVG.php', {
             method: 'POST',
@@ -21,13 +23,19 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.status === 'success') {
                 const svgContainer = document.getElementById('svgContainer');
+                svgContainer.innerHTML = ''; // Clear previous SVGs
 
-                svgContainer.innerHTML = data.svgContent;
-                
+                data.svgContents.forEach(svgContent => {
+                    const div = document.createElement('div');
+                    div.innerHTML = svgContent;
+                    svgContainer.appendChild(div);
+                });
+
                 const svgLoadedEvent = new Event('svgLoaded');
                 document.dispatchEvent(svgLoadedEvent);
             } else {
                 alert(data.message);
+                const debug = document.getElementById('debug');
                 if (data.error) {
                     debug.innerHTML += `<p>Error code: ${data.error}</p>`;
                 }
@@ -35,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('An error occurred while uploading the file.');
+            alert('An error occurred while uploading the files.');
         });
     });
 });
