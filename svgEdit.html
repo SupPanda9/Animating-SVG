@@ -7,12 +7,16 @@
     <link rel="stylesheet" href="svgEditStyles.css"> <!-- Link to external CSS -->
     <script src="uploadSVG.js" defer></script>
     <script src="modifySVG.js" defer></script>
+    <script src="exportSVG.js" defer></script>
+    <script src="exportAnimationFrames.js" defer></script>
 </head>
 <body>
     <h1>Upload SVG File</h1>
     <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
         <input type="file" name="svgFiles[]" id="svgFileInput" accept=".svg" multiple>
         <button type="submit">Upload</button>
+        <button id="exportSVGButton">Export SVG</button>
+        <!--<button id="exportFramesButton">Export Animation Frames</button>-->
     </form>
     <div class="container">
         <div id="svgContainer" class="left">

@@ -19,6 +19,7 @@ function addClickEventToSVGElements() {
             console.log("Selected element type: " + getSelectedElementType());
             addAttributeModifierButtons();
             enableElementDrag();
+            addCopyPasteEvents()
         });
     });
 }
@@ -36,6 +37,59 @@ function getNonGroupSVGElements(container) {
         Array.from(svg.children).forEach(child => traverse(child));
     });
     return elements;
+}
+
+let copiedElement = null;
+
+// Добавя копиране и поставяне на елементи
+function addCopyPasteEvents() {
+    const copyButton = document.createElement('button');
+    copyButton.innerText = 'Copy Element';
+    copyButton.addEventListener('click', copyElement);
+    
+    const pasteButton = document.createElement('button');
+    pasteButton.innerText = 'Paste Element';
+    pasteButton.addEventListener('click', pasteElement);
+    
+    const buttonContainer = document.getElementById('buttonContainer');
+    buttonContainer.appendChild(copyButton);
+    buttonContainer.appendChild(pasteButton);
+}
+
+function copyElement() {
+    if (selectedElement) {
+        copiedElement = selectedElement.cloneNode(true);
+        console.log('Element copied:', copiedElement);
+    } else {
+        alert('No element selected to copy.');
+    }
+}
+
+function pasteElement() {
+    if (copiedElement) {
+        const targetContainer = document.getElementById('svgContainer');
+        const svgElements = targetContainer.querySelectorAll('svg');
+
+        if (svgElements.length === 0) {
+            alert('No SVG elements found in svgContainer.');
+            return;
+        }
+
+        const newElement = copiedElement.cloneNode(true);
+        newElement.classList.remove('selected');
+
+        // Итерираме през всички намерени svg елементи
+        svgElements.forEach(svg => {
+            const svgCopy = newElement.cloneNode(true);
+            svg.appendChild(svgCopy);
+            console.log('Element pasted:', svgCopy);
+        });
+
+        // След като добавим новите елементи, трябва да актуализираме събитията за кликване
+        addClickEventToSVGElements();
+    } else {
+        alert('No element copied.');
+    }
 }
 
 function addAttributeModifierButtons() {

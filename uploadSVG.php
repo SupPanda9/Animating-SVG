@@ -2,6 +2,7 @@
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['svgFiles'])) {
     $files = $_FILES['svgFiles'];
     $response = ['status' => 'success', 'svgContents' => [], 'messages' => []];
+    $idCounter = 1;
 
     for ($i = 0; $i < count($files['name']); $i++) {
         // Проверка за грешки при качването
@@ -29,7 +30,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['svgFiles'])) {
         if (move_uploaded_file($files['tmp_name'][$i], $filePath)) {
             // Връщане на съдържанието на файла
             $svgContent = file_get_contents($filePath);
-            //добавя елемента в края на масива
+
+            // Добавяне на id в SVG съдържанието
+            $svgContent = str_replace('<svg ', '<svg id="svg' . $idCounter . '" ', $svgContent);
+
+            // Увеличаване на брояча за id
+            $idCounter++;
+
             $response['svgContents'][] = $svgContent;
         } else {
             $response['status'] = 'error';
