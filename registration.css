@@ -7,8 +7,8 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-
 }
+
 .container {
     background-color: white; 
     padding: 40px; 
@@ -26,11 +26,11 @@ h1 {
 }
 
 
-#login-form {
+#register-form {
     margin-top: 20px; 
 }
 
-.form-item {
+.form-group {
     margin-bottom: 20px; 
 }
 
@@ -41,10 +41,17 @@ label {
 
 input[type="text"],
 input[type="password"],
+input[type="email"] {
+    width: 100%; 
+    padding: 10px; 
+    border: 1px solid #334; 
+    border-radius: 4px; 
+    box-sizing: border-box; 
+}
 button {
     width: 100%; 
     padding: 10px; 
-    border: 2px solid #334; 
+    border: 1px solid #334; 
     border-radius: 4px; 
     box-sizing: border-box; 
 }

@@ -33,9 +33,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($user && password_verify($password, $user['password'])) {
             session_start();
             $_SESSION['user_id'] = $user['id'];
-            echo json_encode(["success" => "Login successful."]);
+            echo json_encode(["success" => "Успешно влизане."]);
         } else {
-            $errors[] = "Invalid username or password.";
+            $errors[] = "Невалидно потребителско име или парола.";
         }
     }
 
