@@ -1,15 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('exportSVGButton').addEventListener('click', function(event) {
+        console.log("clicked");
         event.preventDefault();  // Предотвратяване на рефрешването на страницата
         exportSVG();
     });
 });
 
 function exportSVG() {
-    const svgContainer = document.getElementById('svgContainer');
-    const svgElement = svgContainer.querySelector('svg');
+    const select = document.getElementById('svgSelect');
+    const selectedId = select.value;
+
+    if (!selectedId) {
+        alert('Please select an SVG to export.');
+        return;
+    }
+
+    const svgElement = document.getElementById(selectedId);
     if (!svgElement) {
-        alert('No SVG element found to export.');
+        alert('Selected SVG element not found.');
         return;
     }
 

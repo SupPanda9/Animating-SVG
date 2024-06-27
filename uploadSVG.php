@@ -28,16 +28,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['svgFiles'])) {
         $filePath = $uploadDir . basename($files['name'][$i]);
 
         if (move_uploaded_file($files['tmp_name'][$i], $filePath)) {
-            // Връщане на съдържанието на файла
             $svgContent = file_get_contents($filePath);
 
-            // Добавяне на id в SVG съдържанието
-            $svgContent = str_replace('<svg ', '<svg id="svg' . $idCounter . '" ', $svgContent);
+            // Използване на DOMDocument и XPath за идентифициране на всеки елемент
+            $dom = new DOMDocument();
+            $dom->loadXML($svgContent);
+            $xpath = new DOMXPath($dom);
+            $elements = $xpath->query('//*[not(self::defs)]'); // Избягване на елементите в <defs>
 
-            // Увеличаване на брояча за id
-            $idCounter++;
+            foreach ($elements as $index => $element) {
+                $tagName = $element->tagName;
+                $element->setAttribute('id', $tagName . ($index + 1)); // Пример: rect1, circle2, и т.н.
+            }
 
-            $response['svgContents'][] = $svgContent;
+            // Съхранение на промененото SVG съдържание
+            $modifiedSvgContent = $dom->saveXML();
+            file_put_contents($filePath, $modifiedSvgContent);
+
+            $response['svgContents'][] = $modifiedSvgContent;
         } else {
             $response['status'] = 'error';
             $response['messages'][] = 'Error moving uploaded file: ' . $files['name'][$i];

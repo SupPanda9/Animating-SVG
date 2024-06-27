@@ -19,7 +19,7 @@ function addClickEventToSVGElements() {
             console.log("Selected element type: " + getSelectedElementType());
             addAttributeModifierButtons();
             enableElementDrag();
-            addCopyPasteEvents()
+            addCopyPasteDeleteEvents()
         });
     });
 }
@@ -40,9 +40,10 @@ function getNonGroupSVGElements(container) {
 }
 
 let copiedElement = null;
+let selectedContainerId = 'svg1'; 
 
 // Добавя копиране и поставяне на елементи
-function addCopyPasteEvents() {
+function addCopyPasteDeleteEvents() {
     const copyButton = document.createElement('button');
     copyButton.innerText = 'Copy Element';
     copyButton.addEventListener('click', copyElement);
@@ -54,6 +55,17 @@ function addCopyPasteEvents() {
     const buttonContainer = document.getElementById('buttonContainer');
     buttonContainer.appendChild(copyButton);
     buttonContainer.appendChild(pasteButton);
+
+    const svgContainers = Array.from(document.querySelectorAll('#svgContainer > div'));
+    const selectContainer = createLabeledDropdown('Select SVG Container:', svgContainers.map((container, index) => `svg${index + 1}`), svgContainers[0].id, function(event) {
+        selectedContainerId = event.target.value;
+    });
+    buttonContainer.appendChild(selectContainer);
+
+    const deleteButton = document.createElement('button');
+    deleteButton.innerText = 'Delete Element';
+    deleteButton.addEventListener('click', deleteElement);
+    buttonContainer.appendChild(deleteButton);
 }
 
 function copyElement() {
@@ -67,28 +79,34 @@ function copyElement() {
 
 function pasteElement() {
     if (copiedElement) {
-        const targetContainer = document.getElementById('svgContainer');
-        const svgElements = targetContainer.querySelectorAll('svg');
-
-        if (svgElements.length === 0) {
-            alert('No SVG elements found in svgContainer.');
+        const targetContainer = document.getElementById(selectedContainerId);
+        if (!targetContainer) {
+            alert('Invalid SVG container selected.');
             return;
         }
 
         const newElement = copiedElement.cloneNode(true);
         newElement.classList.remove('selected');
 
-        // Итерираме през всички намерени svg елементи
-        svgElements.forEach(svg => {
-            const svgCopy = newElement.cloneNode(true);
-            svg.appendChild(svgCopy);
-            console.log('Element pasted:', svgCopy);
-        });
+        // Append the copied element to the selected SVG container
+        targetContainer.appendChild(newElement);
+        console.log('Element pasted:', newElement);
 
-        // След като добавим новите елементи, трябва да актуализираме събитията за кликване
+        // Update click events after pasting new elements
         addClickEventToSVGElements();
     } else {
         alert('No element copied.');
+    }
+}
+
+function deleteElement() {
+    if (selectedElement) {
+        selectedElement.parentNode.removeChild(selectedElement);
+        selectedElement = null; // Нулираме избрания елемент след изтриването
+        const buttonContainer = document.getElementById('buttonContainer');
+        buttonContainer.innerHTML = ''; // Изчистваме бутоните за модификация на атрибутите
+    } else {
+        alert('No element selected to delete.');
     }
 }
 
@@ -249,7 +267,7 @@ function getSelectedElementType() {
 }
 
 // Change the selected element's type
-function changeElementType(newType) {
+function changeElementType(newType) {ь
     if (selectedElement === null) return;
 
     const newElement = document.createElementNS('http://www.w3.org/2000/svg', newType);
@@ -317,6 +335,7 @@ function changeElementType(newType) {
     });
 
     addAttributeModifierButtons(); // Update the attribute modifiers for the new element
+    addCopyPasteDeleteEvents();
 }
 
 function createLabeledInput(labelText, inputType, inputValue, inputHandler) {
@@ -513,6 +532,8 @@ const animationSettings = {
 function applyAnimation(type) {
     const settings = animationSettings[type];
     let animation;
+
+    selectedElement.innerHTML = '';
     
     if (type === 'translate') {
         animation = document.createElementNS('http://www.w3.org/2000/svg', 'animateTransform');

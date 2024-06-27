@@ -24,11 +24,20 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.status === 'success') {
                 const svgContainer = document.getElementById('svgContainer');
                 svgContainer.innerHTML = ''; // Clear previous SVGs
+                const select = document.getElementById('svgSelect');
 
-                data.svgContents.forEach(svgContent => {
-                    const div = document.createElement('div');
-                    div.innerHTML = svgContent;
-                    svgContainer.appendChild(div);
+                data.svgContents.forEach((svgContent, index) => {
+                    const svgId = `svg${index + 1}`; // Генериране на уникален идентификатор
+                    const option = document.createElement('option');
+                    option.value = svgId;
+                    option.textContent = `SVG ${index + 1}`;
+                
+                    const svgDiv = document.createElement('div');
+                    svgDiv.innerHTML = svgContent;
+                
+                    svgContainer.appendChild(svgDiv);
+                
+                    select.appendChild(option);
                 });
 
                 const svgLoadedEvent = new Event('svgLoaded');
