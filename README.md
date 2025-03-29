@@ -60,6 +60,7 @@ Register or log in to start using the platform
 
 ## 📁 Project Structure
 
+```plaintext
 Animating-SVG/
 │-- index.html       # Homepage structure
 │-- index.css        # Homepage styling
@@ -95,6 +96,7 @@ Animating-SVG/
 │
 │-- config.php       # Configuration settings
 │-- DatabaseSetup.txt # SQL script for database setup
+```
 
 ## 🛠 Future Improvements
 
