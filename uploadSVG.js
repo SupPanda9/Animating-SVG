@@ -15,8 +15,11 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('svgFiles[]', files[i]);
         }
 
+<<<<<<< HEAD
         console.log(files)
 
+=======
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
         fetch('uploadSVG.php', {
             method: 'POST',
             body: formData
@@ -28,19 +31,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 svgContainer.innerHTML = ''; // Clear previous SVGs
                 const select = document.getElementById('svgSelect');
 
+<<<<<<< HEAD
 
                 data.svgContents.forEach((svgContent, index) => {
                     console.log(index);
                     const svgId = `svg${index + 1}`; // Генериране на уникален идентификатор
                     console.log(svgId);
+=======
+                data.svgContents.forEach((svgContent, index) => {
+                    const svgId = `svg${index + 1}`; // Генериране на уникален идентификатор
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
                     const option = document.createElement('option');
                     option.value = svgId;
                     option.textContent = `SVG ${index + 1}`;
                 
                     const svgDiv = document.createElement('div');
                     svgDiv.innerHTML = svgContent;
+<<<<<<< HEAD
 
                     svgDiv.firstChild.id = svgId;
+=======
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
                 
                     svgContainer.appendChild(svgDiv);
                 

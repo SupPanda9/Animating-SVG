@@ -2,6 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+<<<<<<< HEAD
     background-color: #f9f9f9;
 }
 
@@ -13,12 +14,17 @@ body {
 
 #uploadForm {
     margin-top: 30px;
+=======
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
 }
 
 h1 {
     text-align: center;
     margin-top: 20px;
+<<<<<<< HEAD
     color: #000;
+=======
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
 }
 
 form {

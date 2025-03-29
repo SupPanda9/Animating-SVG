@@ -31,7 +31,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['svgFiles'])) {
             $svgContent = file_get_contents($filePath);
 
             // Използване на DOMDocument и XPath за идентифициране на всеки елемент
+<<<<<<< HEAD
             
+=======
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
             $dom = new DOMDocument();
             $dom->loadXML($svgContent);
             $xpath = new DOMXPath($dom);
@@ -41,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['svgFiles'])) {
                 $tagName = $element->tagName;
                 $element->setAttribute('id', $tagName . ($index + 1)); // Пример: rect1, circle2, и т.н.
             }
+<<<<<<< HEAD
             
             // Съхранение на промененото SVG съдържание
             $modifiedSvgContent = $dom->saveXML();
@@ -50,6 +54,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['svgFiles'])) {
             $modifiedSvgContent = str_replace('<svg ', '<svg id="svg' . $idCounter . '" ', $modifiedSvgContent);
             // Увеличаване на брояча за id
             $idCounter = $idCounter + 1;
+=======
+
+            // Съхранение на промененото SVG съдържание
+            $modifiedSvgContent = $dom->saveXML();
+            file_put_contents($filePath, $modifiedSvgContent);
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
 
             $response['svgContents'][] = $modifiedSvgContent;
         } else {

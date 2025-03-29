@@ -80,7 +80,10 @@ function copyElement() {
 function pasteElement() {
     if (copiedElement) {
         const targetContainer = document.getElementById(selectedContainerId);
+<<<<<<< HEAD
         console.log("Selected svg", targetContainer);
+=======
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
         if (!targetContainer) {
             alert('Invalid SVG container selected.');
             return;
@@ -268,7 +271,11 @@ function getSelectedElementType() {
 }
 
 // Change the selected element's type
+<<<<<<< HEAD
 function changeElementType(newType) {
+=======
+function changeElementType(newType) {ь
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
     if (selectedElement === null) return;
 
     const newElement = document.createElementNS('http://www.w3.org/2000/svg', newType);
@@ -599,6 +606,7 @@ function enableElementDrag() {
     if (selectedElement === null) return;
 
     let offsetX, offsetY;
+<<<<<<< HEAD
     let originalX, originalY;
 
     function dragStart(event) {
@@ -623,11 +631,21 @@ function enableElementDrag() {
         }
 
         // Add listeners for mouse move and up
+=======
+
+    function dragStart(event) {
+        const rect = selectedElement.getBoundingClientRect();
+        offsetX = event.clientX - rect.left;
+        offsetY = event.clientY - rect.top;
+    
+        // Добавяне на слушатели за движение на мишката и освобождаване на бутона
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
         document.addEventListener('mousemove', dragMove);
         document.addEventListener('mouseup', dragEnd);
     }
 
     function dragMove(event) {
+<<<<<<< HEAD
         const dx = event.clientX //- offsetX;
         const dy = event.clientY //- offsetY;
 
@@ -650,10 +668,23 @@ function enableElementDrag() {
 
     function dragEnd() {
         // Remove listeners after element is dropped
+=======
+        const newX = event.clientX - offsetX;
+        const newY = event.clientY - offsetY;
+    
+        // Промяна на позицията на елемента
+        selectedElement.setAttribute('x', newX);
+        selectedElement.setAttribute('y', newY);
+    }
+
+    function dragEnd() {
+        // Премахване на слушателите след като елементът бъде отпуснат
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
         document.removeEventListener('mousemove', dragMove);
         document.removeEventListener('mouseup', dragEnd);
     }
 
+<<<<<<< HEAD
     // Start dragging when the element is pressed
     selectedElement.addEventListener('mousedown', dragStart);
 }
@@ -668,6 +699,12 @@ function translatePathElement(element, dx, dy) {
     element.setAttribute('d', newD);
 }
 
+=======
+    // Стартиране на преместването при натискане на елемента
+    selectedElement.addEventListener('mousedown', dragStart);
+}
+
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
 document.addEventListener('svgLoaded', function() {
     addClickEventToSVGElements();
 });

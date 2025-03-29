@@ -6,10 +6,14 @@ document.getElementById('saveSVGButton').addEventListener('click', function() {
         return;
     }
 
+<<<<<<< HEAD
     const urlParams = new URLSearchParams(window.location.search);
     const projectId = urlParams.get('project_id');
     console.log("Project ID:", projectId);
 
+=======
+    // Преобразуваме NodeList в масив, за да можем да използваме forEach
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
     const svgElementsArray = Array.from(svgElements);
 
     // Използваме Promise.all, за да изпратим заявки за запазване на всеки SVG елемент асинхронно
@@ -25,7 +29,11 @@ document.getElementById('saveSVGButton').addEventListener('click', function() {
             headers: {
                 'Content-Type': 'application/json',
             },
+<<<<<<< HEAD
             body: JSON.stringify({ name: svgName, svgContent, projectId: projectId}),
+=======
+            body: JSON.stringify({ name: svgName, svgContent }),
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
         })
         .then(response => response.json())
         .then(data => {

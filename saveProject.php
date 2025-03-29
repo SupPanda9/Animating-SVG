@@ -9,7 +9,10 @@ $input = json_decode(file_get_contents('php://input'), true);
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($input['svgContent']) && isset($input['name'])) {
     $svgContent = $input['svgContent'];
     $name = $input['name'];
+<<<<<<< HEAD
     $projectId = $input['projectId'];
+=======
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
 
     // Extract animations
     $animations = [];
@@ -52,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($input['svgContent']) && isse
         // Insert SVG content and animations into svg_files table
         $stmt = $pdo->prepare("INSERT INTO svg_files (name, content, animation_file) VALUES (:name, :content, :animation_file)");
         $stmt->execute(['name' => $name, 'content' => $svgContent, 'animation_file' => json_encode($animations)]);
+<<<<<<< HEAD
 
         // Retrieve the ID of the inserted SVG file
         $svgFileId = $pdo->lastInsertId();
@@ -64,6 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($input['svgContent']) && isse
             echo json_encode(["status" => "error", "message" => "Failed to create project."]);
         }
         
+=======
+        
+        // Retrieve the ID of the inserted SVG file
+        $svgFileId = $pdo->lastInsertId();
+
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
         // Send success response
         echo json_encode(['status' => 'success', 'svgFileId' => $svgFileId]);
     } catch (PDOException $e) {

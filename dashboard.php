@@ -44,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($errors)) {
         echo json_encode(["errors" => $errors]);
         exit;
+<<<<<<< HEAD
     } 
 } elseif (isset($_GET['action']) && $_GET['action'] == 'get_projects') {
         $user_id = $_SESSION['user_id'];
@@ -53,4 +54,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode(["projects" => $projects]);
         exit;
     }
+=======
+    }
+}
+
+>>>>>>> 7001cac89484ab355c8e2378b4a1480bf9a2cf95
 ?>
