@@ -100,7 +100,7 @@ Animating-SVG/
 
 ## 🛠 Future Improvements
 
-🚀 Add more animation presets
-🎵 Integrate sound effects
-🖼 Improve UI design and interactivity
-📂 Enable cloud storage for projects
+[] 🚀 Add more animation presets
+[] 🎵 Integrate sound effects
+[] 🖼 Improve UI design and interactivity
+[] 📂 Enable cloud storage for projects
