@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload SVG File</title>
+    <link rel="stylesheet" href="svgEditStyles.css"> <!-- Link to external CSS -->
+    <script src="uploadSVG.js" defer></script>
+    <script src="modifySVG.js" defer></script>
+    <script src="exportSVG.js" defer></script>
+    <script src="saveProject.js" defer></script>
+    <script src="exportAnimationFrames.js" defer></script>
+</head>
+<body>
+    <h1>Upload SVG File</h1>
+    <form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
+        <input type="file" name="svgFiles[]" id="svgFileInput" accept=".svg" multiple>
+        <button type="submit">Upload</button>
+        <!--<button id="exportFramesButton">Export Animation Frames</button>-->
+    </form> 
+    <select id="svgSelect">
+    </select>
+    <button id="exportSVGButton">Export SVG</button>
+    <div class="container">
+        <div id="svgContainer" class="left">
+            <!-- SVG object will be dynamically inserted here -->
+        </div>
+        <div class="right">
+            <div id="buttonContainer">
+                <!-- Buttons can be added here -->
+            </div>
+            <button id="saveSVGButton">Save SVG</button>
+            <div id="debug"></div> <!-- Debugging container -->
+        </div>
+    </div>
+</body>
+</html>

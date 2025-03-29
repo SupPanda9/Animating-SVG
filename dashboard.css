@@ -1,0 +1,100 @@
+/* Рестартиране на стиловете за body за започване на позиционирането на елементите */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: url('https://cdn.svgator.com/images/2022/06/use-svg-as-background-image-particle-strokes.svg');
+}
+
+/* Центриране на главния контейнер хоризонтално в горната част */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ddd;
+    border: 8px solid #334; /* Лилава рамка */
+    color: #334;
+    padding: 20px;
+    margin: 20px auto 0; /* Горен марджин за разделяне от горния край */
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Опционално: добавяне на сянка за по-добър вид */
+    border-radius: 8px; /* Опционално: заоблени ъгли */
+}
+
+/* Центриране на заглавието */
+.container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Стил за форм групите */
+.form-group {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Задаване на фиксирана височина за текстовото поле и бутон */
+.form-group input,
+.form-group button {
+    height: 24px; /* Регулиране на височината според нуждите */
+    width: 100%;  /* Уверяване, че заемат цялата ширина на родителския контейнер */
+    display: block;
+    margin: 0 auto;
+}
+
+/* Стил за бутона */
+.form-group button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #334; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    height: 48px; /* Същата височина като текстовото поле */
+}
+
+/* Добавяне на ефект при задържане на бутона */
+.form-group button:hover {
+    background-color: #000; /* По-тъмен лилав */
+}
+
+/* Стил за контейнера с проектите */
+#projects-container {
+    display: flex; /* Включване на flexbox подредба */
+    flex-direction: row; /* Подредба в редица */
+    flex-wrap: wrap; /* Обвиване на елементите на следващия ред */
+    justify-content: center; /* Центриране на елементите хоризонтално */
+    margin: 40px auto; /* Центриране на контейнера хоризонтално и добавяне на горен марджин */
+    width: 85%; /* Регулиране на ширината според нуждите */
+    padding: 20px;
+    border: 8px solid #334; /* Светло сива рамка */
+    border-radius: 4px;
+    background-color: #334; /* Светъл фон */
+}
+
+/* Стил за индивидуалните елементи на проектите */
+.project-tile {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1 1 200px; /* Регулиране на базовата стойност според нуждите */
+    max-width: 200px; /* Максимална ширина за блокчетата с проекти */
+    text-align: center; /* Центриране на текста */
+}
+
+.project-tile:hover {
+    background-color: #334; /* По-тъмен лилав */
+}

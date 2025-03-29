@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Табло</title>
+    <script src="dashboard.js" defer></script>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <main class="container">
+        <h1>Табло</h1>
+        <form id="create-project-form" method="post" action="dashboard.php">
+            <div class="form-group">
+                <label for="project_name">Име на проект</label>
+                <input type="text" id="project_name" name="project_name" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Създай проект</button>
+            </div>
+        </form>
+        <div id="form-messages"></div>
+    </main>
+    <div id="projects-container"></div>
+</body>
+</html>

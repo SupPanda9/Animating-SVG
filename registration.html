@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="registration.css">
+    <script src="registration.js" defer></script> <!-- Include the registration.js script -->
+</head>
+<body>
+    <main class="container">
+        <button id="back-button" onclick="window.history.back()" class="back-btn">Назад</button>
+        <h1>Регистрация</h1>
+        <form id="register-form" method="post" action="registration.php">
+            <div class="form-group">
+                <label for="first_name">Име:</label>
+                <input type="text" id="first_name" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Фамилия:</label>
+                <input type="text" id="last_name" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Имейл:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Потребителко име:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Парола:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Регистрация</button>
+            </div>
+        </form>
+        <div id="form-messages"></div> <!-- This will display any messages from registration.js -->
+    </main>
+</body>
+</html>

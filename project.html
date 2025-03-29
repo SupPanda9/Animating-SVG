@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload SVG File</title>
+    <link rel="stylesheet" href="svgEditStyles.css"> <!-- Link to external CSS -->
+    <script src="modifySVG.js" defer></script>
+    <script src="exportSVG.js" defer></script>
+    <script src="saveProject.js" defer></script>
+    <script src="loadSVGFiles.js" defer></script>
+</head>
+<body>
+    <h1>Промени проекта си, за да получиш 6</h1>
+    <select id="svgSelect">
+    </select>
+    <button id="exportSVGButton">Export SVG</button>
+    <div class="container">
+        <div id="svgContainer" class="left">
+            <!-- SVG object will be dynamically inserted here -->
+        </div>
+        <div class="right">
+            <div id="buttonContainer">
+                <!-- Buttons can be added here -->
+            </div>
+            <button id="saveSVGButton">Save SVG</button>
+            <div id="debug"></div> <!-- Debugging container -->
+        </div>
+    </div>
+</body>
+</html>
