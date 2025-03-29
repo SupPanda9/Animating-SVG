@@ -1,16 +1,16 @@
-🎨 Animating SVG - Web-Based SVG Animation Tool
+## 🎨 Animating SVG - Web-Based SVG Animation Tool
 
-🌟 Project Overview
+## 🌟 Project Overview
 
 Animating SVG is a web-based platform that enables users to create, animate, and edit SVG files effortlessly. The system provides an intuitive UI and various animation tools, making SVG animation accessible for everyone. Users can register, log in, upload, modify, and save animated SVG projects. The system stores user data securely in a MySQL database and ensures smooth performance through PHP and JavaScript integration.
 
-Developed in collaboration with Hristina Gadzheva
+Developed in collaboration with Hristina Gadzheva.
 
-✨ Features
+## ✨ Features
 
 ✅ User Authentication - Register/Login functionality with secure data storage✅ SVG File Management - Upload, modify, and save multiple SVG projects✅ Animation Effects - Scale, rotate, translate, change colors, and more✅ Frame Exporting - Save animated frames for further processing✅ Project Dashboard - Manage ongoing projects with an easy-to-use interface✅ Database Integration - Stores user data, files, and animations securely
 
-📌 Technologies Used
+## 📌 Technologies Used
 
 Frontend: HTML, CSS, JavaScript
 
@@ -20,7 +20,7 @@ Server: XAMPP (for local development)
 
 SVG Handling: JavaScript-based manipulation
 
-🛠 Installation & Setup
+## 🛠 Installation & Setup
 
 🔹 Prerequisites
 
@@ -44,21 +44,21 @@ Open your browser and navigate to http://localhost/Animating-SVG
 
 Register or log in to start using the platform
 
-🖥️ UI Preview
+## 🖥️ UI Preview
 
-### 🏠 Dashboard
+🏠 Dashboard
 ![Dashboard](media/Dashboard.png)
 
-### 🔑 Login Page
+🔑 Login Page
 ![Login](media/login.png)
 
-### 📝 Registration Page
+📝 Registration Page
 ![Registration](media/registration.png)
 
-### 🎨 SVG Editor
+🎨 SVG Editor
 ![SVG Editor](media/svgEdit.png)
 
-📁 Project Structure
+## 📁 Project Structure
 
 Animating-SVG/
 │-- index.html       # Homepage structure
@@ -96,7 +96,7 @@ Animating-SVG/
 │-- config.php       # Configuration settings
 │-- DatabaseSetup.txt # SQL script for database setup
 
-🛠 Future Improvements
+## 🛠 Future Improvements
 
 🚀 Add more animation presets
 🎵 Integrate sound effects
